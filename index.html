@@ -178,10 +178,10 @@
   }
   body.bailando h1{animation:none;transition:none;
     filter:drop-shadow(0 0 calc(7px + var(--kick,0) * 20px) rgba(255,208,138,.5))}
-  body.bailando .pot svg{transition:none;
-    transform:translateY(calc(var(--kick,0) * var(--amp,1) * -11px))
-      rotate(calc(var(--kick,0) * var(--tilt,0) * 1deg))
-      scale(calc(1 + var(--kick,0) * .022))}
+  body.bailando .pot svg{transform-origin:50% 90%;
+    transition:transform .26s cubic-bezier(.34,1.28,.5,1);
+    transform:rotate(calc(var(--gira,0) * var(--giro,3.4) * 1deg))
+      translateY(calc(var(--brinco,0) * var(--amp,1) * -5px))}
   #pulso{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:0;
     mix-blend-mode:screen;
     background:radial-gradient(72% 52% at 50% 34%, rgba(255,196,110,.46), transparent 72%)}
@@ -339,6 +339,25 @@ const PIEZAS = [
     forma:"olla",    nombre:"pieza de barro negro", color:"#2a2522", motif:"#c8b492", escala:0.99 }
 ];
 
+/* ---------------------------------------------------------------------------
+   Les pas de danse. Un pas est joue a chaque temps detecte dans la musique.
+   Chaque entree vaut [balancement, saut] :
+     balancement  -1 = a gauche, 0 = droit, 1 = a droite
+     saut          0 = reste pose, 1 = decolle un peu
+   Chaque poterie recoit une des chorégraphies ci-dessous, plus un decalage,
+   pour qu'elles ne dansent jamais toutes ensemble.
+--------------------------------------------------------------------------- */
+const PASOS = [
+  [[-1,0],[ 1,0],[-1,0],[ 1,0]],
+  [[-1,0],[-1,1],[ 1,0],[ 1,1]],
+  [[ 1,0],[ 1,0],[-1,1],[-1,0]],
+  [[ 0,1],[-1,0],[ 0,1],[ 1,0]],
+  [[-1,0],[ 0,0],[ 1,0],[ 0,1]],
+  [[-1,0],[-1,0],[-1,0],[ 1,1]],
+  [[ 1,1],[-1,0],[-1,0],[ 1,0]],
+  [[ 0,0],[ 1,0],[ 1,1],[-1,0]]
+];
+
 const calma = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const tomadas = new Set();
 let ultimoBoton = null;
@@ -372,6 +391,7 @@ function construir(){
     estante.appendChild(shelf);
   }
   potes = [...estante.querySelectorAll('.pot')];
+  if (suena) coreografia();
 }
 
 function pieza(p, i){
@@ -381,8 +401,9 @@ function pieza(p, i){
   b.style.setProperty('color', p.color);
   b.style.setProperty('--motif', p.motif);
   b.style.setProperty('--amp', (0.6 + ((i * 7) % 9) / 10).toFixed(2));
-  b.style.setProperty('--tilt', ((i % 3) - 1) * 1.4);
-  b._lag = (i * 3) % 8;
+  b.style.setProperty('--giro', (2.6 + ((i * 5) % 6) * 0.45).toFixed(2));
+  b._pat = i % PASOS.length;
+  b._off = (i * 5) % 4;
   b.dataset.i = i;
   b.setAttribute('aria-label', `${p.nombre}, pieza ${i + 1} de ${PIEZAS.length}`);
   b.innerHTML = `<svg viewBox="0 0 100 120" aria-hidden="true"><use href="#${p.forma}"/></svg>`;
@@ -586,8 +607,9 @@ const titulo = document.querySelector('h1');
 let ctx = null, gan = null, ana = null, datos = null;
 let bucle = null, suena = false, precargado = false;
 let b0 = 1, b1 = 8;
-const hist = new Array(8).fill(0);
 let nivel = 0, pico = 1, piso = 255;
+const COMPAS = 2;
+let paso = 0, tiempos = 0, armado = true, ultimoTiempo = 0, periodo = 0;
 
 function precargar(){
   if (precargado) return;
@@ -632,11 +654,40 @@ function pulsar(){
   const bruto = Math.min(1, Math.max(0, (media - piso) / rango));
   const inst = Math.pow(bruto, 2.5);
   nivel = Math.max(inst, nivel * .84);
-  hist.pop();
-  hist.unshift(nivel);
   document.documentElement.style.setProperty('--kick', nivel.toFixed(3));
-  potes.forEach(p => p.style.setProperty('--kick', hist[p._lag].toFixed(3)));
+
+  const ahora = performance.now();
+  const minInt = periodo ? Math.max(240, periodo * .72) : 300;
+  if (armado && inst > .66 && ahora - ultimoTiempo > minInt){
+    const dt = ahora - ultimoTiempo;
+    if (dt > 240 && dt < 1400) periodo = periodo ? periodo * .78 + dt * .22 : dt;
+    armado = false;
+    ultimoTiempo = ahora;
+    if (++tiempos % COMPAS === 0){
+      paso++;
+      coreografia();
+    }
+  } else if (inst < .25){
+    armado = true;
+  }
+
   bucle = requestAnimationFrame(pulsar);
+}
+
+function coreografia(){
+  potes.forEach(p => {
+    const pat = PASOS[p._pat];
+    const s = pat[(paso + p._off) % pat.length];
+    p.style.setProperty('--gira', s[0]);
+    p.style.setProperty('--brinco', s[1]);
+  });
+}
+
+function quietas(){
+  potes.forEach(p => {
+    p.style.setProperty('--gira', 0);
+    p.style.setProperty('--brinco', 0);
+  });
 }
 
 function arrancar(){
@@ -669,9 +720,11 @@ function parar(){
   nivel = 0;
   pico = 1;
   piso = 255;
-  hist.fill(0);
+  armado = true;
+  periodo = 0;
+  tiempos = 0;
   document.documentElement.style.setProperty('--kick', 0);
-  potes.forEach(p => p.style.setProperty('--kick', 0));
+  quietas();
   if (ctx && gan){
     gan.gain.cancelScheduledValues(ctx.currentTime);
     gan.gain.setValueAtTime(gan.gain.value, ctx.currentTime);
@@ -716,9 +769,11 @@ document.addEventListener('visibilitychange', () => {
   nivel = 0;
   pico = 1;
   piso = 255;
-  hist.fill(0);
+  armado = true;
+  periodo = 0;
+  tiempos = 0;
   document.documentElement.style.setProperty('--kick', 0);
-  potes.forEach(p => p.style.setProperty('--kick', 0));
+  quietas();
 });
 
 titulo.addEventListener('pointercancel', soltarPresion);

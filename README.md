@@ -61,18 +61,39 @@ const ARRANQUE = 20;   // seconde de depart, et de rebouclage
 const RETENER = 620;   // duree de l'appui long, en ms
 ```
 
-Quand la musique joue, les poteries dansent réellement sur le kick. Le son passe
-par un `AnalyserNode` Web Audio, dont on lit l'énergie des basses (bandes de 43 à
-150 Hz), avec :
+### Les pas de danse
 
-- une **normalisation auto-adaptative** pic/plancher, pour que l'amplitude reste
-  correcte quelle que soit la section du morceau, sans réglage manuel ;
-- une **courbe en puissance 2,5** et une décroissance de 0,84 par image, pour que
-  le mouvement rebondisse au lieu de flotter ;
-- un **décalage par pièce** (`_lag`, huit images d'historique) pour que le
-  mouvement ondule le long de l'étagère au lieu de bouger d'un bloc.
+Quand la musique joue, les poteries ne suivent pas les basses en continu, elles
+**exécutent un pas à chaque temps détecté**. C'est la différence entre trembler
+et danser.
 
-La lumière de l'atelier pulse aussi, et le prénom rougeoie au rythme des basses.
+Le son passe par un `AnalyserNode` Web Audio dont on lit l'énergie des basses
+(bandes de 43 à 150 Hz), avec une **normalisation auto-adaptative** pic/plancher :
+l'échelle se recalibre en continu, donc l'amplitude reste juste quelle que soit
+la section du morceau, sans aucun réglage manuel.
+
+Les temps sont détectés par un front montant avec hystérésis (déclenchement au-
+dessus de 0,66, réarmement sous 0,25) et un **verrouillage de tempo** : la période
+estimée relève elle-même le seuil minimal entre deux temps, ce qui élimine les
+doubles déclenchements. Mesuré sur ce morceau : période stable à 340 ms.
+
+Chaque poterie reçoit une chorégraphie du tableau `PASOS`, plus un décalage, donc
+elles ne dansent jamais toutes pareil : l'une fait gauche-droite-gauche-droite,
+une autre gauche-gauche-droite-droite, une autre trois fois à gauche puis à
+droite. Le pivot est à la base du pot (`transform-origin: 50% 90%`), donc elles se
+penchent sur leur pied au lieu de tourner sur elles-mêmes. L'amplitude varie de
+2,6 à 4,85 degrés selon la pièce, et certains pas décollent un peu.
+
+Deux réglages en tête du bloc :
+
+```js
+const COMPAS = 2;   // un pas tous les 2 temps. Mettre 1 pour doubler l'energie
+const PASOS = [ ... ];  // les chorégraphies, [balancement, saut] par pas
+```
+
+La lumière de l'atelier pulse en continu sur les basses, et le prénom rougeoie au
+même rythme : c'est ce qui garde une énergie constante sans faire trembler les
+pièces.
 
 Après avoir vu le message final, le prénom se met à respirer doucement toutes les
 4,6 s pour rendre l'easter egg trouvable. Pour supprimer cet indice, retire
