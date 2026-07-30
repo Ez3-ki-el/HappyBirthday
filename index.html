@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Feliz cumpleaños, Andrea</title>
+<meta name="description" content="Doce piezas en el estante. Toma una en tus manos.">
+<meta name="theme-color" content="#241813">
+<meta property="og:title" content="Feliz cumpleaños, Andrea">
+<meta property="og:description" content="Doce piezas en el estante. Toma una en tus manos.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%23241813'/%3E%3Cpath d='M33 34h34v-9H33z' fill='%23b5541f'/%3E%3Cpath d='M33 34C9 49 9 88 32 100q18 9 36 0C91 88 91 49 67 34Z' fill='%23b5541f'/%3E%3Cpath d='M14 62q36 11 72 0' stroke='%23f6e6c8' stroke-width='6' fill='none'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Outfit:wght@300;400;500&display=swap">
+<style>
+  :root{
+    --clay:#b5541f; --clay-soft:#c46534; --ocre:#c78a2b; --gold:#e8b96a;
+    --cream:#f4e7cf; --cream-hi:#fbf3e2; --ink:#3b2a1e; --ink-soft:#8a7259;
+    --wood:#6d4527; --wood-hi:#9d6c3d; --night:#1d130f;
+    --shell-gap:clamp(20px,4.4vw,44px);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body.locked{overflow:hidden}
+  html{min-height:100%;background:#241813}
+  body{
+    min-height:100dvh;
+    background:
+      radial-gradient(120% 90% at 18% -10%, rgba(255,208,138,.20), transparent 60%),
+      radial-gradient(100% 70% at 92% 8%, rgba(232,185,106,.10), transparent 55%),
+      linear-gradient(168deg,#241813 0%,#38251a 52%,#1d130f 100%);
+    background-attachment:fixed;
+    color:var(--cream);
+    font-family:'Outfit',system-ui,-apple-system,'Segoe UI',sans-serif;
+    font-weight:300;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:radial-gradient(circle at 50% 42%, transparent 46%, rgba(10,6,4,.42) 100%);
+  }
+
+  .motes{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+  .mote{position:absolute;border-radius:50%;background:#ffd9a0;filter:blur(.4px);
+    animation:drift linear infinite}
+  @keyframes drift{
+    0%{transform:translate3d(0,0,0);opacity:0}
+    12%{opacity:.5}
+    88%{opacity:.4}
+    100%{transform:translate3d(var(--dx),-115vh,0);opacity:0}
+  }
+
+  .wrap{position:relative;z-index:2;max-width:1180px;margin:0 auto;
+    padding:clamp(38px,7vw,76px) clamp(16px,4vw,44px) clamp(30px,6vw,56px)}
+
+  header{text-align:center;margin-bottom:clamp(34px,6vw,64px)}
+  .eyebrow{margin:0;font-size:clamp(11px,2.2vw,13px);letter-spacing:.42em;
+    text-transform:lowercase;color:var(--gold);opacity:.9}
+  h1{margin:.24em 0 0;font-family:'Playfair Display',Georgia,serif;font-style:italic;
+    font-weight:400;line-height:1;font-size:clamp(52px,12.5vw,104px);
+    background:linear-gradient(96deg,#ffe7bd 0%,#e8b96a 48%,#c9762f 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .lede{margin:.9em auto 0;max-width:30ch;font-size:clamp(13px,2.7vw,15.5px);
+    line-height:1.65;color:#e9d8c0;opacity:.68}
+
+  .shelf{margin:0 auto var(--shell-gap);max-width:1060px}
+  .pots{display:grid;grid-template-columns:repeat(var(--cols,6),1fr);
+    align-items:end;justify-items:center;gap:clamp(6px,2.1vw,26px)}
+  .plank{height:clamp(10px,1.5vw,15px);border-radius:3px;
+    background:linear-gradient(180deg,var(--wood-hi) 0 14%,var(--wood) 14% 62%,#513119 100%);
+    box-shadow:0 10px 22px rgba(0,0,0,.5),0 1px 0 rgba(255,255,255,.06) inset}
+
+  .pot{position:relative;border:0;padding:0;background:none;
+    width:calc(min(92%,116px) * var(--s,1));cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+    transition:transform .5s cubic-bezier(.2,.9,.24,1)}
+  .pot::before{content:'';position:absolute;left:50%;bottom:6%;translate:-50% 0;
+    width:190%;aspect-ratio:1;border-radius:50%;opacity:0;
+    background:radial-gradient(circle,rgba(255,208,138,.34),transparent 62%);
+    transition:opacity .45s;pointer-events:none;z-index:-1}
+  .pot svg{display:block;width:100%;height:auto;
+    filter:drop-shadow(0 8px 12px rgba(0,0,0,.55)) saturate(.86) brightness(.9);
+    transition:filter .45s}
+  .pot:hover,.pot:focus-visible{transform:translateY(-11px)}
+  .pot:focus-visible{outline:2px solid var(--gold);outline-offset:8px;border-radius:6px}
+  .pot:hover::before,.pot:focus-visible::before{opacity:1}
+  .pot:hover svg,.pot:focus-visible svg{filter:drop-shadow(0 14px 18px rgba(0,0,0,.55)) saturate(1) brightness(1.04)}
+  .pot:active{transform:translateY(-6px) scale(.97)}
+  @media (hover:none){
+    .pot svg{filter:drop-shadow(0 8px 12px rgba(0,0,0,.55)) saturate(.98) brightness(.99)}
+  }
+  .pot.taken{transform:translateY(-9px)}
+  .pot.taken svg{filter:drop-shadow(0 12px 16px rgba(0,0,0,.5)) saturate(1.02) brightness(1.02)}
+  .pot.taken::before{opacity:.62}
+  .pot.taken::after{content:'';position:absolute;left:50%;bottom:-2px;translate:-50% 0;
+    width:6px;height:6px;border-radius:50%;background:var(--gold);
+    box-shadow:0 0 10px var(--gold)}
+
+  .tally{display:flex;flex-direction:column;align-items:center;gap:14px;
+    margin-top:clamp(20px,4vw,40px)}
+  .beads{display:flex;gap:9px}
+  .bead{width:9px;height:9px;border-radius:50%;background:transparent;
+    border:1px solid rgba(232,185,106,.42);transition:background .45s,border-color .45s,box-shadow .45s}
+  .bead.on{border-color:transparent;box-shadow:0 0 9px rgba(255,208,138,.4)}
+  .count{font-size:12px;letter-spacing:.28em;color:var(--gold);opacity:.62}
+
+  .layer{position:fixed;inset:0;z-index:50;display:grid;place-items:center;
+    padding:clamp(18px,5vw,40px)}
+  .layer[hidden]{display:none}
+  .scrim{position:absolute;inset:0;background:rgba(16,9,5,.74);
+    backdrop-filter:blur(4px);animation:fade .4s ease both}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+
+  .card{position:relative;width:min(560px,100%);border-radius:16px;
+    padding:clamp(38px,7vw,58px) clamp(24px,6vw,50px) clamp(30px,6vw,44px);
+    background:linear-gradient(172deg,var(--cream-hi),#eddfc2);
+    box-shadow:0 34px 70px rgba(0,0,0,.58),0 2px 0 rgba(255,255,255,.5) inset;
+    transform:rotate(-.6deg);animation:cardIn .58s cubic-bezier(.16,.9,.24,1) both;
+    text-align:center}
+  @keyframes cardIn{from{opacity:0;transform:translateY(26px) scale(.93) rotate(-2.4deg)}
+    to{opacity:1;transform:translateY(0) scale(1) rotate(-.6deg)}}
+  .card::before{content:'';position:absolute;left:0;right:0;top:0;height:6px;
+    border-radius:16px 16px 0 0;background:var(--accent,var(--clay))}
+  .orn{display:block;margin:0 auto clamp(18px,3.6vw,26px);width:38px;height:38px;
+    color:var(--accent,var(--clay))}
+  .card p{margin:0;font-family:'Playfair Display',Georgia,serif;font-style:italic;
+    font-weight:400;color:var(--ink);font-size:clamp(20px,4.5vw,29px);line-height:1.44;
+    text-wrap:balance}
+  .card .meta{margin-top:clamp(22px,4.4vw,32px);font-family:'Outfit',sans-serif;
+    font-style:normal;font-size:11.5px;letter-spacing:.26em;text-transform:lowercase;
+    color:var(--ink-soft)}
+  .card .meta::before{content:'';display:block;width:46px;height:1px;margin:0 auto 16px;
+    background:var(--accent,var(--clay));opacity:.5}
+  .x{position:absolute;top:12px;right:12px;width:36px;height:36px;border-radius:50%;
+    border:0;background:rgba(59,42,30,.08);color:var(--ink-soft);font-size:19px;
+    line-height:1;cursor:pointer;transition:background .25s,color .25s}
+  .x:hover{background:rgba(59,42,30,.16);color:var(--ink)}
+  .x:focus-visible{outline:2px solid var(--clay);outline-offset:2px}
+
+  .finale{position:fixed;inset:0;z-index:60;display:grid;place-items:center;
+    padding:clamp(20px,5vw,48px);text-align:center}
+  .finale[hidden]{display:none}
+  .finale .scrim{background:
+    radial-gradient(80% 60% at 50% 40%, rgba(120,68,26,.5), transparent 70%),
+    rgba(14,8,5,.9)}
+  .fin-in{position:relative;max-width:640px;animation:cardIn .8s cubic-bezier(.16,.9,.24,1) both}
+  .fin-in .eyebrow{letter-spacing:.4em}
+  .fin-in h2{margin:.16em 0 .5em;font-family:'Playfair Display',Georgia,serif;
+    font-style:italic;font-weight:400;line-height:1;font-size:clamp(46px,11vw,88px);
+    background:linear-gradient(96deg,#ffe7bd,#e8b96a 50%,#c9762f);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .fin-in p{margin:0 auto;max-width:26ch;font-family:'Playfair Display',Georgia,serif;
+    font-style:italic;font-size:clamp(18px,4vw,25px);line-height:1.5;color:#f6e7cd}
+  .fin-in p + p{margin-top:.7em;color:var(--gold)}
+  .again{margin-top:clamp(30px,6vw,44px);padding:13px 28px;border-radius:999px;
+    border:1px solid rgba(232,185,106,.5);background:transparent;color:var(--gold);
+    font-family:'Outfit',sans-serif;font-size:12px;letter-spacing:.24em;
+    text-transform:lowercase;cursor:pointer;transition:background .3s,color .3s}
+  .again:hover{background:rgba(232,185,106,.14);color:#ffe7bd}
+  .again:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+  #chips{position:fixed;top:0;left:0;width:100%;height:100%;
+    z-index:70;pointer-events:none}
+
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);
+    white-space:nowrap}
+
+  @media (max-width:660px){
+    :root{--shell-gap:13px}
+    .wrap{padding-top:26px;padding-bottom:18px}
+    header{margin-bottom:20px}
+    .lede{margin-top:.75em}
+    .tally{margin-top:14px;gap:11px}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    .mote{display:none}
+    *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="olla" viewBox="0 0 100 120">
+    <ellipse cx="50" cy="112" rx="27" ry="6" fill="#000" opacity=".3"/>
+    <path d="M33 32C7 48 7 92 31 106q19 10 38 0c24-14 24-58-2-74Z" fill="currentColor"/>
+    <path d="M34 33h32V23H34Z" fill="currentColor"/>
+    <ellipse cx="50" cy="23" rx="16" ry="5" fill="#000" opacity=".3"/>
+    <path d="M13 62q37 11 74 0" fill="none" stroke="var(--motif)" stroke-width="4.5" opacity=".82"/>
+    <path d="M11 76q39 11 78 0" fill="none" stroke="var(--motif)" stroke-width="2" opacity=".5"/>
+    <g fill="var(--motif)" opacity=".85">
+      <circle cx="30" cy="50" r="3.2"/><circle cx="50" cy="46" r="3.2"/><circle cx="70" cy="50" r="3.2"/>
+    </g>
+  </symbol>
+  <symbol id="jarron" viewBox="0 0 100 120">
+    <ellipse cx="50" cy="112" rx="22" ry="5" fill="#000" opacity=".3"/>
+    <path d="M38 28C22 46 18 72 27 92q23 20 46 0c9-20 5-46-11-64Z" fill="currentColor"/>
+    <path d="M31 16q19 14 38 0l-5 14H36Z" fill="currentColor"/>
+    <ellipse cx="50" cy="17" rx="19" ry="5" fill="#000" opacity=".28"/>
+    <path d="M23 72l9-9 9 9 9-9 9 9 9-9 9 9" fill="none" stroke="var(--motif)" stroke-width="3.2" opacity=".82"/>
+    <path d="M22 84q28 8 56 0" fill="none" stroke="var(--motif)" stroke-width="2" opacity=".5"/>
+  </symbol>
+  <symbol id="cazuela" viewBox="0 0 100 120">
+    <ellipse cx="50" cy="112" rx="30" ry="6" fill="#000" opacity=".3"/>
+    <path d="M12 58c0 38 18 50 38 50s38-12 38-50Z" fill="currentColor"/>
+    <ellipse cx="50" cy="58" rx="38" ry="10" fill="currentColor"/>
+    <ellipse cx="50" cy="58" rx="30" ry="7.5" fill="#000" opacity=".32"/>
+    <g fill="var(--motif)" opacity=".82">
+      <circle cx="26" cy="78" r="3.4"/><circle cx="42" cy="82" r="3.4"/>
+      <circle cx="58" cy="82" r="3.4"/><circle cx="74" cy="78" r="3.4"/>
+    </g>
+    <path d="M18 93q32 8 64 0" fill="none" stroke="var(--motif)" stroke-width="2.5" opacity=".55"/>
+  </symbol>
+  <symbol id="cantaro" viewBox="0 0 100 120">
+    <ellipse cx="50" cy="112" rx="24" ry="5" fill="#000" opacity=".3"/>
+    <path d="M39 36C19 50 17 88 32 102q18 10 36 0c15-14 13-52-7-66Z" fill="currentColor"/>
+    <path d="M42 37h16V20H42Z" fill="currentColor"/>
+    <path d="M59 24c20 3 22 28 8 36" fill="none" stroke="currentColor" stroke-width="7"/>
+    <ellipse cx="50" cy="20" rx="10" ry="4" fill="#000" opacity=".3"/>
+    <path d="M20 66q30 10 60 0" fill="none" stroke="var(--motif)" stroke-width="4" opacity=".78"/>
+    <g fill="var(--motif)" opacity=".82">
+      <circle cx="36" cy="84" r="3"/><circle cx="50" cy="87" r="3"/><circle cx="64" cy="84" r="3"/>
+    </g>
+  </symbol>
+  <symbol id="rosa" viewBox="0 0 100 100">
+    <g fill="currentColor">
+      <ellipse cx="50" cy="24" rx="7" ry="14"/>
+      <ellipse cx="50" cy="24" rx="7" ry="14" transform="rotate(45 50 50)"/>
+      <ellipse cx="50" cy="24" rx="7" ry="14" transform="rotate(90 50 50)"/>
+      <ellipse cx="50" cy="24" rx="7" ry="14" transform="rotate(135 50 50)"/>
+      <ellipse cx="50" cy="24" rx="7" ry="14" transform="rotate(180 50 50)"/>
+      <ellipse cx="50" cy="24" rx="7" ry="14" transform="rotate(225 50 50)"/>
+      <ellipse cx="50" cy="24" rx="7" ry="14" transform="rotate(270 50 50)"/>
+      <ellipse cx="50" cy="24" rx="7" ry="14" transform="rotate(315 50 50)"/>
+    </g>
+    <circle cx="50" cy="50" r="11" fill="currentColor" opacity=".45"/>
+    <circle cx="50" cy="50" r="5" fill="currentColor"/>
+  </symbol>
+</svg>
+
+<div class="motes" id="motes" aria-hidden="true"></div>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">feliz cumpleaños</p>
+    <h1>Andrea</h1>
+    <p class="lede">Doce piezas en el estante. Toma una en tus manos.</p>
+  </header>
+
+  <main id="estante"></main>
+
+  <div class="tally">
+    <div class="beads" id="beads" aria-hidden="true"></div>
+    <p class="count" id="count">0 / 12</p>
+  </div>
+</div>
+
+<div class="layer" id="layer" hidden>
+  <div class="scrim" data-close></div>
+  <article class="card" id="card" role="dialog" aria-modal="true" aria-labelledby="card-text">
+    <button class="x" id="close" aria-label="Cerrar">&times;</button>
+    <svg class="orn" aria-hidden="true"><use href="#rosa"/></svg>
+    <p id="card-text"></p>
+    <p class="meta" id="card-meta"></p>
+  </article>
+</div>
+
+<div class="finale" id="finale" hidden>
+  <div class="scrim" data-close></div>
+  <div class="fin-in" role="dialog" aria-modal="true" aria-labelledby="fin-title">
+    <p class="eyebrow">feliz cumpleaños</p>
+    <h2 id="fin-title">Andrea</h2>
+    <p>Que este año te dé tanto como tú das.</p>
+    <p>Ahora vámonos a bailar con Amygdala.</p>
+    <button class="again" id="again">volver al estante</button>
+  </div>
+</div>
+
+<canvas id="chips" aria-hidden="true"></canvas>
+<p class="sr" id="live" role="status" aria-live="polite"></p>
+
+<script>
+/* ---------------------------------------------------------------------------
+   Les 12 pièces. Pour changer un texte, modifie simplement "texto".
+   forma  : olla | jarron | cazuela | cantaro
+   color  : couleur de la terre / de l'émail
+   motif  : couleur des décors peints dessus
+   escala : taille relative de la pièce sur l'étagère (0.9 -> 1.06)
+--------------------------------------------------------------------------- */
+const PIEZAS = [
+  { texto:"Tienes manos que saben volver bonito todo lo que tocan.",
+    forma:"olla",    nombre:"olla de barro",        color:"#b5541f", motif:"#f6e6c8", escala:0.99 },
+  { texto:"Tienes una risa que endereza los días torcidos.",
+    forma:"jarron",  nombre:"jarrón de talavera",   color:"#e6d3ac", motif:"#8a5a2b", escala:1.05 },
+  { texto:"Del barro sacas belleza; de los días, calma.",
+    forma:"cantaro", nombre:"cántaro de barro negro", color:"#26221f", motif:"#cbbba0", escala:1.00 },
+  { texto:"Tu paciencia es un arte: sabes que lo bueno necesita su tiempo de cocción.",
+    forma:"cazuela", nombre:"cazuela vidriada",     color:"#4a6b3a", motif:"#f0e6cd", escala:0.96 },
+  { texto:"Hay gente que pasa y gente que se queda. Tú te quedas, y todo se vuelve más cálido.",
+    forma:"jarron",  nombre:"jarrón cobalto",       color:"#23528f", motif:"#f2ead7", escala:1.02 },
+  { texto:"Tienes la elegancia de quien no necesita demostrar nada.",
+    forma:"olla",    nombre:"olla de ocre",         color:"#c78a2b", motif:"#4a3418", escala:0.93 },
+  { texto:"Tu manera de escuchar hace que las cosas pesen menos.",
+    forma:"cazuela", nombre:"cazuela negra",        color:"#201d1b", motif:"#b9a98e", escala:1.00 },
+  { texto:"La forma en que quieres a tu hijo lo dice todo de ti: das todo, sin medirlo y sin pedir nada.",
+    forma:"cantaro", nombre:"cántaro rojo",         color:"#8c3b23", motif:"#f4e2c4", escala:1.03 },
+  { texto:"Eres valiente de una manera silenciosa, que es la más difícil.",
+    forma:"jarron",  nombre:"jarrón verde olivo",   color:"#5d7040", motif:"#f2ead7", escala:0.98 },
+  { texto:"No buscas la pieza perfecta, buscas la pieza viva. Por eso todo lo tuyo tiene alma.",
+    forma:"olla",    nombre:"olla de crema",        color:"#ead9b6", motif:"#9c6a33", escala:0.95 },
+  { texto:"Bailas como si el cuerpo entendiera cosas que las palabras no saben decir.",
+    forma:"jarron",  nombre:"jarrón de terracota",  color:"#c46534", motif:"#f8ecd2", escala:1.04 },
+  { texto:"El mundo es un lugar más bonito porque tú estás en él.",
+    forma:"olla",    nombre:"pieza de barro negro", color:"#2a2522", motif:"#c8b492", escala:0.99 }
+];
+
+const calma = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const tomadas = new Set();
+let ultimoBoton = null;
+
+/* ---------- étagère, recomposée selon la largeur de l'écran --------------- */
+const estante = document.getElementById('estante');
+
+function columnas(){
+  const w = innerWidth;
+  if (w < 360) return 2;
+  if (w < 660) return 3;
+  if (w < 1000) return 4;
+  return 6;
+}
+
+function construir(){
+  const cols = columnas();
+  estante.dataset.cols = cols;
+  estante.textContent = '';
+  for (let i = 0; i < PIEZAS.length; i += cols){
+    const shelf = document.createElement('div');
+    shelf.className = 'shelf';
+    const fila = document.createElement('div');
+    fila.className = 'pots';
+    fila.style.setProperty('--cols', cols);
+    PIEZAS.slice(i, i + cols).forEach((p, k) => fila.appendChild(pieza(p, i + k)));
+    const plank = document.createElement('div');
+    plank.className = 'plank';
+    shelf.append(fila, plank);
+    estante.appendChild(shelf);
+  }
+}
+
+function pieza(p, i){
+  const b = document.createElement('button');
+  b.className = 'pot' + (tomadas.has(i) ? ' taken' : '');
+  b.style.setProperty('--s', p.escala);
+  b.style.setProperty('color', p.color);
+  b.style.setProperty('--motif', p.motif);
+  b.dataset.i = i;
+  b.setAttribute('aria-label', `${p.nombre}, pieza ${i + 1} de ${PIEZAS.length}`);
+  b.innerHTML = `<svg viewBox="0 0 100 120" aria-hidden="true"><use href="#${p.forma}"/></svg>`;
+  b.addEventListener('click', () => tomar(i, b));
+  return b;
+}
+
+/* ---------- compteur ------------------------------------------------------ */
+const beads = document.getElementById('beads');
+const count = document.getElementById('count');
+const live  = document.getElementById('live');
+
+PIEZAS.forEach(() => {
+  const d = document.createElement('span');
+  d.className = 'bead';
+  beads.appendChild(d);
+});
+
+function marcar(){
+  [...beads.children].forEach((d, i) => {
+    const on = tomadas.has(i);
+    d.classList.toggle('on', on);
+    d.style.background = on ? PIEZAS[i].color === '#2a2522' || PIEZAS[i].color === '#201d1b'
+      ? PIEZAS[i].motif : PIEZAS[i].color : 'transparent';
+  });
+  count.textContent = `${tomadas.size} / ${PIEZAS.length}`;
+}
+
+/* ---------- la carte ----------------------------------------------------- */
+const layer = document.getElementById('layer');
+const card  = document.getElementById('card');
+const texto = document.getElementById('card-text');
+const meta  = document.getElementById('card-meta');
+
+function tomar(i, boton){
+  const p = PIEZAS[i];
+  ultimoBoton = boton;
+  const nueva = !tomadas.has(i);
+  tomadas.add(i);
+  boton.classList.add('taken');
+  marcar();
+
+  const acento = (p.color === '#2a2522' || p.color === '#201d1b' || p.color === '#26221f')
+    ? p.motif : p.color;
+  card.style.setProperty('--accent', acento);
+  texto.textContent = p.texto;
+  meta.textContent = `${p.nombre} · pieza ${i + 1} de ${PIEZAS.length}`;
+  layer.hidden = false;
+  document.body.classList.add('locked');
+  document.getElementById('close').focus();
+  live.textContent = p.texto;
+
+  if (nueva){
+    const r = boton.getBoundingClientRect();
+    polvo(r.left + r.width / 2, r.top + r.height * .82, p.color, p.motif);
+  }
+  if (tomadas.size === PIEZAS.length) setTimeout(final, 1500);
+}
+
+function cerrar(){
+  if (layer.hidden) return;
+  layer.hidden = true;
+  if (finale.hidden) document.body.classList.remove('locked');
+  if (ultimoBoton) ultimoBoton.focus({ preventScroll: true });
+}
+
+document.getElementById('close').addEventListener('click', cerrar);
+layer.addEventListener('click', e => { if (e.target.dataset.close !== undefined) cerrar(); });
+
+/* ---------- le final ----------------------------------------------------- */
+const finale = document.getElementById('finale');
+
+function final(){
+  cerrar();
+  finale.hidden = false;
+  document.body.classList.add('locked');
+  document.getElementById('again').focus();
+  lluvia();
+}
+
+function cerrarFinal(){
+  finale.hidden = true;
+  document.body.classList.remove('locked');
+}
+
+document.getElementById('again').addEventListener('click', () => {
+  cerrarFinal();
+  tomadas.clear();
+  marcar();
+  construir();
+  scrollTo({ top: 0, behavior: calma ? 'auto' : 'smooth' });
+});
+finale.addEventListener('click', e => {
+  if (e.target.dataset.close !== undefined) cerrarFinal();
+});
+
+addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  if (!finale.hidden) cerrarFinal();
+  else cerrar();
+});
+
+/* ---------- poussière d'argile et éclats d'émail -------------------------- */
+const cv = document.getElementById('chips');
+const cx = cv.getContext('2d');
+const dpr = Math.min(2, devicePixelRatio || 1);
+let trozos = [], raf = null, ancho = 0, alto = 0;
+
+function ajustar(){
+  const r = cv.getBoundingClientRect();
+  const w = Math.round(r.width || innerWidth);
+  const h = Math.round(r.height || innerHeight);
+  if (w === ancho && h === alto) return;
+  ancho = w; alto = h;
+  cv.width = Math.round(w * dpr);
+  cv.height = Math.round(h * dpr);
+  cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+ajustar();
+
+function empujar(t){ trozos.push(t); if (!raf) raf = requestAnimationFrame(latir); }
+
+function polvo(x, y, c1, c2){
+  if (calma) return;
+  ajustar();
+  for (let i = 0; i < 22; i++){
+    const a = Math.random() * Math.PI * 2;
+    const v = 1 + Math.random() * 3.4;
+    empujar({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 1.4, g: .07,
+      r: 1 + Math.random() * 2.4, w: 0, h: 0, rot: 0, vr: 0, vida: 1, baja: .016,
+      c: Math.random() < .5 ? c1 : c2 });
+  }
+}
+
+function lluvia(){
+  if (calma) return;
+  ajustar();
+  const paleta = ['#b5541f','#e8b96a','#f4e7cf','#23528f','#4a6b3a','#c78a2b','#8c3b23'];
+  let tandas = 0;
+  const soltar = () => {
+    for (let i = 0; i < 60; i++){
+      empujar({ x: Math.random() * ancho, y: -20 - Math.random() * 220,
+        vx: (Math.random() - .5) * 1.7, vy: 1.4 + Math.random() * 2.6, g: .045,
+        r: 0, w: 4 + Math.random() * 7, h: 3 + Math.random() * 5,
+        rot: Math.random() * Math.PI, vr: (Math.random() - .5) * .18,
+        vida: 1, baja: .0035, c: paleta[(Math.random() * paleta.length) | 0] });
+    }
+    if (++tandas < 5) setTimeout(soltar, 520);
+  };
+  soltar();
+}
+
+function latir(){
+  cx.clearRect(0, 0, ancho, alto);
+  trozos = trozos.filter(t => {
+    t.vx *= .994; t.vy += t.g; t.x += t.vx; t.y += t.vy;
+    t.rot += t.vr; t.vida -= t.baja;
+    if (t.vida <= 0 || t.y > alto + 60) return false;
+    cx.globalAlpha = Math.max(0, Math.min(1, t.vida));
+    cx.fillStyle = t.c;
+    if (t.r){
+      cx.beginPath(); cx.arc(t.x, t.y, t.r, 0, Math.PI * 2); cx.fill();
+    } else {
+      cx.save(); cx.translate(t.x, t.y); cx.rotate(t.rot);
+      cx.fillRect(-t.w / 2, -t.h / 2, t.w, t.h); cx.restore();
+    }
+    return true;
+  });
+  cx.globalAlpha = 1;
+  raf = trozos.length ? requestAnimationFrame(latir) : null;
+}
+
+/* ---------- poussière en suspension dans l'atelier ----------------------- */
+if (!calma){
+  const motes = document.getElementById('motes');
+  for (let i = 0; i < 24; i++){
+    const m = document.createElement('span');
+    const s = 1.5 + Math.random() * 3.5;
+    m.className = 'mote';
+    m.style.cssText = `left:${Math.random() * 100}%;bottom:${-10 - Math.random() * 20}vh;
+      width:${s}px;height:${s}px;opacity:0;
+      animation-duration:${22 + Math.random() * 26}s;
+      animation-delay:${-Math.random() * 40}s;
+      --dx:${(Math.random() - .5) * 160}px`;
+    motes.appendChild(m);
+  }
+}
+
+/* ---------- mise en place ------------------------------------------------ */
+let temporizador;
+addEventListener('resize', () => {
+  ajustar();
+  clearTimeout(temporizador);
+  temporizador = setTimeout(() => {
+    if (+estante.dataset.cols !== columnas()) construir();
+  }, 160);
+});
+
+construir();
+marcar();
+</script>
+</body>
+</html>
