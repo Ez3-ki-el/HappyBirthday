@@ -179,7 +179,7 @@
   body.bailando h1{animation:none;transition:none;
     filter:drop-shadow(0 0 calc(7px + var(--kick,0) * 20px) rgba(255,208,138,.5))}
   body.bailando .pot svg{transform-origin:50% 90%;
-    transition:transform .26s cubic-bezier(.34,1.28,.5,1);
+    transition:transform .13s cubic-bezier(.34,1.28,.5,1);
     transform:rotate(calc(var(--gira,0) * var(--giro,3.4) * 1deg))
       translateY(calc(var(--brinco,0) * var(--amp,1) * -5px))}
   #pulso{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:0;
@@ -350,12 +350,12 @@ const PIEZAS = [
 const PASOS = [
   [[-1,0],[ 1,0],[-1,0],[ 1,0]],
   [[-1,0],[-1,1],[ 1,0],[ 1,1]],
-  [[ 1,0],[ 1,0],[-1,1],[-1,0]],
+  [[ 1,0],[ 1,1],[-1,0],[-1,1]],
   [[ 0,1],[-1,0],[ 0,1],[ 1,0]],
-  [[-1,0],[ 0,0],[ 1,0],[ 0,1]],
-  [[-1,0],[-1,0],[-1,0],[ 1,1]],
-  [[ 1,1],[-1,0],[-1,0],[ 1,0]],
-  [[ 0,0],[ 1,0],[ 1,1],[-1,0]]
+  [[-1,0],[ 0,1],[ 1,0],[ 0,1]],
+  [[-1,0],[-1,1],[-1,0],[ 1,1]],
+  [[ 1,1],[-1,0],[ 1,0],[-1,1]],
+  [[ 0,1],[ 1,0],[ 1,1],[-1,0]]
 ];
 
 const calma = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -609,7 +609,9 @@ let bucle = null, suena = false, precargado = false;
 let b0 = 1, b1 = 8;
 let nivel = 0, pico = 1, piso = 255;
 const COMPAS = 1;
-let paso = 0, tiempos = 0, armado = true, ultimoTiempo = 0, periodo = 0;
+const SUB = 2;
+let paso = 0, tiempos = 0, ultimoPaso = 0;
+let armado = true, ultimoTiempo = 0, periodo = 0;
 
 function precargar(){
   if (precargado) return;
@@ -663,15 +665,21 @@ function pulsar(){
     if (dt > 240 && dt < 1400) periodo = periodo ? periodo * .78 + dt * .22 : dt;
     armado = false;
     ultimoTiempo = ahora;
-    if (++tiempos % COMPAS === 0){
-      paso++;
-      coreografia();
-    }
+    if (++tiempos % COMPAS === 0) darPaso(ahora);
   } else if (inst < .25){
     armado = true;
   }
 
+  const intervalo = (periodo || 340) * COMPAS / SUB;
+  if (ahora - ultimoPaso >= intervalo) darPaso(ahora);
+
   bucle = requestAnimationFrame(pulsar);
+}
+
+function darPaso(ahora){
+  ultimoPaso = ahora;
+  paso++;
+  coreografia();
 }
 
 function coreografia(){
@@ -723,6 +731,7 @@ function parar(){
   armado = true;
   periodo = 0;
   tiempos = 0;
+  ultimoPaso = 0;
   document.documentElement.style.setProperty('--kick', 0);
   quietas();
   if (ctx && gan){
@@ -772,6 +781,7 @@ document.addEventListener('visibilitychange', () => {
   armado = true;
   periodo = 0;
   tiempos = 0;
+  ultimoPaso = 0;
   document.documentElement.style.setProperty('--kick', 0);
   quietas();
 });

@@ -77,25 +77,43 @@ dessus de 0,66, réarmement sous 0,25) et un **verrouillage de tempo** : la pér
 estimée relève elle-même le seuil minimal entre deux temps, ce qui élimine les
 doubles déclenchements. Mesuré sur ce morceau : période stable à 340 ms.
 
+Le moteur des pas est une **horloge**, pas la détection. Les temps détectés ne
+servent qu'à recaler la phase et à estimer la période. C'est indispensable : dans
+un creux du morceau sans kick franc, la détection ne déclenche plus, et une
+chorégraphie pilotée uniquement par elle se figerait plusieurs secondes. Mesuré
+en temps simulé : écart maximal entre deux pas de 184 ms, y compris sans aucun
+temps détecté.
+
 Chaque poterie reçoit une chorégraphie du tableau `PASOS`, plus un décalage, donc
 elles ne dansent jamais toutes pareil : l'une fait gauche-droite-gauche-droite,
-une autre gauche-gauche-droite-droite, une autre trois fois à gauche puis à
-droite. Le pivot est à la base du pot (`transform-origin: 50% 90%`), donc elles se
-penchent sur leur pied au lieu de tourner sur elles-mêmes. L'amplitude varie de
-2,6 à 4,85 degrés selon la pièce, et certains pas décollent un peu.
+une autre gauche-gauche-droite-droite, une autre reste penchée à gauche mais
+alterne les sauts. Le pivot est à la base du pot (`transform-origin: 50% 90%`),
+donc elles se penchent sur leur pied au lieu de tourner sur elles-mêmes.
+L'amplitude varie de 2,6 à 4,85 degrés selon la pièce.
 
-Deux réglages en tête du bloc :
+Aucune chorégraphie ne répète deux fois la même pose d'affilée, bouclage compris :
+chaque pièce bouge donc à chaque pas, sans temps mort.
+
+### Régler la vitesse
 
 ```js
-const COMPAS = 1;   // un pas par temps. 2 = deux fois plus calme, 4 = tres pose
-const PASOS = [ ... ];  // les chorégraphies, [balancement, saut] par pas
+const COMPAS = 1;   // un pas tous les COMPAS temps  (augmenter = plus lent)
+const SUB = 2;      // nombre de pas par temps       (augmenter = plus rapide)
 ```
 
-Avec `COMPAS = 1` sur ce morceau, un pas toutes les 340 ms, soit environ 2,9 pas
-par seconde. La transition durant 260 ms, chaque pas a juste le temps de se poser
-avant le suivant : le mouvement est quasi continu. Pour rendre les pas plus nets
-sans en changer la fréquence, raccourcir la transition de `.pot svg` en
-`body.bailando` de 260 ms à environ 180 ms.
+L'intervalle entre deux pas vaut `periode x COMPAS / SUB`. Sur ce morceau, dont la
+période mesurée est de 340 ms :
+
+| `COMPAS` | `SUB` | Intervalle | Pas par seconde |
+|---|---|---|---|
+| 2 | 1 | 680 ms | 1,5 |
+| 1 | 1 | 340 ms | 2,9 |
+| 1 | 2 | 170 ms | 5,9 (réglage actuel) |
+| 1 | 3 | 113 ms | 8,8 |
+
+La transition d'un pas dure 130 ms, réglée dans `body.bailando .pot svg`. Elle doit
+rester inférieure à l'intervalle, sinon les pas se chevauchent et le mouvement
+redevient flou au lieu d'être net.
 
 La lumière de l'atelier pulse en continu sur les basses, et le prénom rougeoie au
 même rythme : c'est ce qui garde une énergie constante sans faire trembler les
