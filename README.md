@@ -87,9 +87,15 @@ penchent sur leur pied au lieu de tourner sur elles-mêmes. L'amplitude varie de
 Deux réglages en tête du bloc :
 
 ```js
-const COMPAS = 2;   // un pas tous les 2 temps. Mettre 1 pour doubler l'energie
+const COMPAS = 1;   // un pas par temps. 2 = deux fois plus calme, 4 = tres pose
 const PASOS = [ ... ];  // les chorégraphies, [balancement, saut] par pas
 ```
+
+Avec `COMPAS = 1` sur ce morceau, un pas toutes les 340 ms, soit environ 2,9 pas
+par seconde. La transition durant 260 ms, chaque pas a juste le temps de se poser
+avant le suivant : le mouvement est quasi continu. Pour rendre les pas plus nets
+sans en changer la fréquence, raccourcir la transition de `.pot svg` en
+`body.bailando` de 260 ms à environ 180 ms.
 
 La lumière de l'atelier pulse en continu sur les basses, et le prénom rougeoie au
 même rythme : c'est ce qui garde une énergie constante sans faire trembler les
