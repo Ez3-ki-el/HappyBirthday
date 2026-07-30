@@ -119,23 +119,25 @@ recompose les étagères en conservant les pièces déjà prises.
 
 ## Mise en ligne sur GitHub Pages
 
+Le site est en ligne à cette adresse :
+
+```
+https://ez3-ki-el.github.io/HappyBirthday/
+```
+
+Dépôt : `https://github.com/Ez3-ki-el/HappyBirthday`, publié depuis la branche
+`main`, dossier `/ (root)`, réglable dans `Settings` > `Pages`.
+
+Pour publier une modification :
+
 ```bash
-git init -b main
-git add .
-git commit -m "Site d'anniversaire pour Andrea"
-git remote add origin https://github.com/Ez3-ki-el/HappyBirthday.github.io.git
-git push -u origin main
+git add -A
+git commit -m "Le message qui va bien"
+git push origin main
 ```
 
-Puis dans le dépôt : `Settings` > `Pages` > `Build and deployment` >
-`Deploy from a branch` > branche `main`, dossier `/ (root)`.
+GitHub Pages republie en une minute environ. Si l'ancienne version s'affiche
+encore, c'est le cache du navigateur : un rechargement forcé suffit.
 
-Le dépôt s'appelant `HappyBirthday.github.io` sous le compte `Ez3-ki-el`, GitHub
-le sert comme *project page* :
-
-```
-https://ez3-ki-el.github.io/HappyBirthday.github.io/
-```
-
-Pour obtenir l'adresse courte `https://ez3-ki-el.github.io/`, il faut renommer le
-dépôt en exactement `Ez3-ki-el.github.io`. Le site fonctionne dans les deux cas.
+Pour obtenir l'adresse courte `https://ez3-ki-el.github.io/` sans sous-dossier,
+il faudrait renommer le dépôt en exactement `Ez3-ki-el.github.io`.
